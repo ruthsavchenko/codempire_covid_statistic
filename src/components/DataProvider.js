@@ -4,26 +4,27 @@ import axios from 'axios';
 export const DataContext = createContext()
 
 export const DataProvider = (props) => {
-    const [countries, setCountries] = useState([])
+    const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     
-
-    const getData = () => {
-        axios.get('https://api.covid19api.com/summary')
-            .then(response => {
-                setCountries(response.data)
-                console.log(response.data)
-            })
-            .catch(error => {
-                console.error('Error fetching data: ', error);
-            })
-            .finally(() => {
-                setLoading(false)
-            })
-    }
-
     useEffect(() => {
-        getData();
+        fetch('https://api.covid19api.com/summary')
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            }
+            throw response
+        })
+        .then(data => {
+            setData(data)
+            console.log(data)
+        })
+        .catch(error => {
+            console.error('Error fetching data: ', error);
+        })
+        .finally(() => {
+            setLoading(false)
+        })
     }, [])
 
     if (loading) {
@@ -31,7 +32,7 @@ export const DataProvider = (props) => {
     }
 
     return (
-        <DataContext.Provider value={{ countries }}>
+        <DataContext.Provider value={{ data }}>
             {props.children}
         </DataContext.Provider>
     )

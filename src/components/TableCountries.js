@@ -2,9 +2,9 @@ import React, {useContext} from 'react'
 import { DataContext } from './DataProvider'
 
 export const TableCountries = () => {
-    const { countries } = useContext(DataContext)
+    const { data } = useContext(DataContext)
 
-    console.log(countries)
+    console.log(data)
 
     return (
         <div>
@@ -18,7 +18,7 @@ export const TableCountries = () => {
                 </thead>
                 <tbody>
                     {
-                        countries.map((item, i) => (
+                        data.map((item, i) => (
                             <tr key={i}>
                                 <td>{item}</td>
                                 <td>{item.Country}</td>
