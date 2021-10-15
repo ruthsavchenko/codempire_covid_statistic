@@ -1,14 +1,17 @@
 import React, {useContext} from 'react'
 import { DataContext } from './DataProvider'
+import './style/TableCountries.css'
+import { Modal } from './Modal'
 
 export const TableCountries = () => {
-    const { data } = useContext(DataContext)
+    const { data, openModal, setOpenModal, handleOpen, filteredData } = useContext(DataContext)
 
-    console.log(data)
+    console.log(filteredData)
 
     return (
         <div>
-            <table>
+            {openModal && <Modal  />}
+            <table className="TableCountries">
                 <thead>
                     <tr>
                         <th>№</th>
@@ -18,11 +21,11 @@ export const TableCountries = () => {
                 </thead>
                 <tbody>
                     {
-                        data.map((item, i) => (
-                            <tr key={i}>
-                                <td>{item}</td>
-                                <td>{item.Country}</td>
-                                <td>{item.TotalConfirmed}</td>
+                        filteredData.Countries.map((countryObj, index) => (
+                            <tr key={index}>
+                                <td>{index+1}</td>
+                                <td onClick={() => handleOpen(data.Countries.id)} style={{cursor: 'pointer'}}>{countryObj.Country}</td>
+                                <td>{countryObj.TotalConfirmed}</td>
                             </tr>
                         ))
                     }
